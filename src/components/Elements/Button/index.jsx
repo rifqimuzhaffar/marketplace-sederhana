@@ -1,4 +1,4 @@
-import PropTypes from "prop-types"; // Import PropTypes untuk validasi prop
+import PropTypes from "prop-types";
 
 const Button = (props) => {
   const { children, color = "bg-black", textColor = "text-white" } = props;
