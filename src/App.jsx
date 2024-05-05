@@ -1,17 +1,14 @@
 import TopNavbar from "./components/Elements/topnavbar";
-// import Button from "./components/Elements/Button";
+import HomeHero from "./components/Elements/HomeHero";
 
 function App() {
   return (
     <>
       <TopNavbar></TopNavbar>
 
-      <div className="bg-black bg-homepage h-screen text-slate-300 bg-cover object-cover bg-no-repeat bg-bottom flex items-center">
-        {/* <Button color="bg-red-400">Show Now</Button>
-      <Button color="bg-blue-500" textColor="text-black">
-        Contact Me
-      </Button> */}
-      </div>
+      <section className="bg-black bg-homepage min-h-screen text-slate-300 bg-cover object-cover bg-no-repeat bg-bottom flex items-center">
+        <HomeHero></HomeHero>
+      </section>
     </>
   );
 }

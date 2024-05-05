@@ -4,7 +4,7 @@ const Button = (props) => {
   const { children, color = "bg-black", textColor = "text-white" } = props;
   return (
     <button
-      className={`h-10 px-6 font-semibold rounded-md ${color} ${textColor}`}
+      className={`h-10 px-6 font-semibold rounded-md ${color} ${textColor} hover:bg-black`}
       type="submit"
     >
       {children}
