@@ -1,11 +1,12 @@
 import { useState } from "react";
 import { FiSearch, FiShoppingCart, FiMenu } from "react-icons/fi";
+import { Link } from "react-router-dom";
 
 const MenuLinks = [
-  { id: 1, name: "Home" },
-  { id: 2, name: "Products" },
-  { id: 3, name: "About" },
-  { id: 4, name: "Contact" },
+  { id: 1, name: "Home", path: "/" },
+  { id: 2, name: "Products", path: "/products" },
+  { id: 3, name: "About", path: "/about" },
+  { id: 4, name: "Contact", path: "/contact" },
 ];
 
 const TopNavbar = () => {
@@ -17,14 +18,14 @@ const TopNavbar = () => {
 
   const navItems = MenuLinks.map((data) => (
     <li key={data.id}>
-      <a
-        href="#"
+      <Link
+        to={data.path}
         className="px-4 font-semibold text-white hover:text-primary relative group"
         onClick={toggleSidebar}
       >
         {data.name}
         <span className="absolute left-0 bottom-0 w-full h-0.5 bg-primary transform scale-x-0 group-hover:scale-x-50 transition-transform duration-300"></span>
-      </a>
+      </Link>
     </li>
   ));
 
