@@ -1,11 +1,16 @@
 import TopNavbar from "../components/Elements/topnavbar";
+import Tittle from "../components/Elements/Tittle";
+import CardProducts from "../components/Elements/CardProducts";
 
 const Products = () => {
   return (
     <div>
       <TopNavbar />
-      <section className="bg-black bg-homepage min-h-screen text-slate-300 bg-cover object-cover bg-no-repeat bg-bottom flex items-center">
-        <p className="m-auto font-bold text-3xl">ini Product</p>
+      <section className="bg-black bg-homepage min-h-screen text-white bg-cover object-cover bg-no-repeat bg-bottom flex">
+        <div className="mx-auto">
+          <Tittle />
+          <CardProducts />
+        </div>
       </section>
     </div>
   );
