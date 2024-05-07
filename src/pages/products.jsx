@@ -6,7 +6,7 @@ const Products = () => {
   return (
     <div>
       <TopNavbar />
-      <section className="bg-black bg-homepage min-h-screen text-white bg-cover object-cover bg-no-repeat bg-bottom flex">
+      <section className="bg-black bg-homepage min-h-screen text-white bg-cover object-cover bg-no-repeat bg-bottom flex pb-10">
         <div className="mx-auto">
           <Tittle />
           <CardProducts />

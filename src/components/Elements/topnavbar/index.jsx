@@ -12,7 +12,8 @@ const MenuLinks = [
 const TopNavbar = () => {
   const [showSidebar, setShowSidebar] = useState(false);
 
-  const toggleSidebar = () => {
+  const toggleSidebar = (e) => {
+    e.preventDefault();
     setShowSidebar(!showSidebar);
   };
 
@@ -21,7 +22,6 @@ const TopNavbar = () => {
       <Link
         to={data.path}
         className="px-4 font-semibold text-white hover:text-primary relative group"
-        onClick={toggleSidebar}
       >
         {data.name}
         <span className="absolute left-0 bottom-0 w-full h-0.5 bg-primary transform scale-x-0 group-hover:scale-x-50 transition-transform duration-300"></span>
