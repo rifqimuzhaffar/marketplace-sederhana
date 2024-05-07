@@ -23,7 +23,7 @@ const Footer = (props) => {
   const { price } = props;
   return (
     <div className="flex justify-between items-center">
-      <p>IDR 15000</p>
+      <p>{price}</p>
       <a className="border p-2 rounded-full bg-black hover:bg-white">
         <FiShoppingCart className="h-5 w-5 text-primary" />
       </a>
