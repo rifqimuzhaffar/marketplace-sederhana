@@ -1,20 +1,27 @@
 import { useState } from "react";
 import { FiSearch, FiShoppingCart, FiMenu } from "react-icons/fi";
 import { Link } from "react-router-dom";
+import { products } from "../../../pages/product";
 
 const MenuLinks = [
   { id: 1, name: "Home", path: "/" },
-  { id: 2, name: "Products", path: "/products" },
+  { id: 2, name: "Product", path: "/product" },
   { id: 3, name: "About", path: "/about" },
   { id: 4, name: "Contact", path: "/contact" },
 ];
 
-const TopNavbar = () => {
+const TopNavbar = ({ cart }) => {
   const [showSidebar, setShowSidebar] = useState(false);
+  const [showShoppingCart, setShowShoppingCart] = useState(false);
 
   const toggleSidebar = (e) => {
     e.preventDefault();
     setShowSidebar(!showSidebar);
+  };
+
+  const toggleShowShoppingCart = (e) => {
+    e.preventDefault();
+    setShowShoppingCart(!showShoppingCart);
   };
 
   const navItems = MenuLinks.map((data) => (
@@ -45,6 +52,7 @@ const TopNavbar = () => {
         <a
           href="#"
           className="text-white hover:text-primary transition-colors duration-300"
+          onClick={toggleShowShoppingCart}
         >
           <FiShoppingCart className="h-6 w-6" />
         </a>
@@ -65,6 +73,55 @@ const TopNavbar = () => {
         <div className="px-4 py-8 text-center">
           <ul className="space-y-4">{navItems}</ul>
         </div>
+      </div>
+      {/* Show Shopping Cart */}
+      <div
+        className={`absolute overflow-auto top-full w-[28rem] h-screen bg-white text-black z-10 ${
+          showShoppingCart ? "left-0" : "left-[100%]"
+        }`}
+      >
+        <h1 className="text-4xl text-center py-4 border-b-primary border">
+          Cart
+        </h1>
+        <table className="text-left border-separate table-auto border-spacing-x-5">
+          <thead>
+            <tr>
+              <th>Product</th>
+              <th>Price</th>
+              <th>Quantity</th>
+              <th>Total</th>
+            </tr>
+          </thead>
+          <tbody>
+            {cart.map((item) => {
+              const product = products.find(
+                (product) => product.id === item.id
+              );
+              if (product) {
+                return (
+                  <tr key={item.id}>
+                    <td>{product.name}</td>
+                    <td>
+                      Rp{" "}
+                      {product.price.toLocaleString("id-ID", {
+                        styles: "currency",
+                        currency: "IDR",
+                      })}
+                    </td>
+                    <td>{item.qty}</td>
+                    <td>
+                      Rp{" "}
+                      {(item.qty * product.price).toLocaleString("id-ID", {
+                        styles: "currency",
+                        currency: "IDR",
+                      })}
+                    </td>
+                  </tr>
+                );
+              }
+            })}
+          </tbody>
+        </table>
       </div>
     </nav>
   );

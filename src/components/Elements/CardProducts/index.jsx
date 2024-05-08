@@ -16,15 +16,21 @@ const Header = (props) => {
 
 const Body = (props) => {
   const { name } = props;
-  return <h3 className="text-xl">{name}</h3>;
+  return <h3 className="text-xl">-- {name} --</h3>;
 };
 
 const Footer = (props) => {
-  const { price } = props;
+  const { price, handleAddToCart, id } = props;
   return (
     <div className="flex justify-between items-center">
-      <p>{price}</p>
-      <a className="border p-2 rounded-full bg-black hover:bg-white">
+      <p>
+        IDR{" "}
+        {price.toLocaleString("id-ID", { styles: "currency", currency: "IDR" })}
+      </p>
+      <a
+        onClick={() => handleAddToCart(id)}
+        className="border p-2 rounded-full bg-black hover:bg-white"
+      >
         <FiShoppingCart className="h-5 w-5 text-primary" />
       </a>
     </div>
