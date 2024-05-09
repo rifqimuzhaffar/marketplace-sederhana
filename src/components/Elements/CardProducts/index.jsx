@@ -21,11 +21,11 @@ const Body = (props) => {
 };
 
 const Footer = ({ productId, handleAddToCart }) => {
-  const item = products.find((product) => product.id === productId); // Cari produk berdasarkan productId
+  const item = products.find((product) => product.id === productId);
 
   const handleClick = () => {
     if (item) {
-      handleAddToCart(item); // Kirim objek produk lengkap ke handleAddToCart
+      handleAddToCart(item);
     }
   };
 

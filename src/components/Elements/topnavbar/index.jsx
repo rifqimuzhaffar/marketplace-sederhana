@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { FiSearch, FiShoppingCart, FiMenu } from "react-icons/fi";
 import { Link } from "react-router-dom";
-import { products } from "../../../pages/product";
 
 const MenuLinks = [
   { id: 1, name: "Home", path: "/" },
