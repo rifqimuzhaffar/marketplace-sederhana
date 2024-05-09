@@ -51,9 +51,12 @@ const TopNavbar = ({ cart }) => {
         </a>
         <a
           href="#"
-          className="text-white hover:text-primary transition-colors duration-300"
+          className="relative text-white hover:text-primary transition-colors duration-300"
           onClick={toggleShowShoppingCart}
         >
+          <span className="absolute w-3 h-3 rounded-full bg-red-500 top-4 left-4 text-[8px] text-center md:w-5 md:h-5 md:text-[12px]">
+            {cart && cart.length}
+          </span>
           <FiShoppingCart className="h-6 w-6" />
         </a>
         <a
@@ -92,7 +95,7 @@ const TopNavbar = ({ cart }) => {
               <th>Total</th>
             </tr>
           </thead>
-          <tbody>
+          {/* <tbody>
             {cart.map((item) => {
               const product = products.find(
                 (product) => product.id === item.id
@@ -120,7 +123,7 @@ const TopNavbar = ({ cart }) => {
                 );
               }
             })}
-          </tbody>
+          </tbody> */}
         </table>
       </div>
     </nav>

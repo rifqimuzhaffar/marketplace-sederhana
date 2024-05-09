@@ -49,21 +49,12 @@ export const products = [
 ];
 
 const Product = () => {
-  const [cart, setCart] = useState([
-    {
-      id: "1",
-      qty: 1,
-    },
-  ]);
+  const [cart, setCart] = useState([]);
 
-  const handleAddToCart = (id) => {
-    setCart([
-      ...cart,
-      {
-        id,
-        qty: 1,
-      },
-    ]);
+  const handleAddToCart = (item) => {
+    const updatedCart = Array.isArray(cart) ? cart : [];
+    setCart([...updatedCart, item]);
+    console.log(item);
   };
 
   return (
@@ -72,14 +63,13 @@ const Product = () => {
       <section className="bg-black bg-homepage min-h-screen text-white bg-cover object-cover bg-no-repeat bg-bottom flex pb-10">
         <div className="mx-auto">
           <Tittle />
-          <div className="flex flex-wrap mt-[1.5rem] justify-center gap-6 md:px-[5px] lg:px-[11rem]">
+          <div className="flex flex-wrap mt-[1.5rem] justify-center gap-6 md:gap-12 md:px-[5px] lg:px-[5rem]">
             {products.map((product) => (
               <CardProducts key={product.id}>
                 <CardProducts.Header image={product.image} alt={product.alt} />
                 <CardProducts.Body name={product.name} />
                 <CardProducts.Footer
-                  price={product.price}
-                  id={product.id}
+                  productId={product.id}
                   handleAddToCart={handleAddToCart}
                 />
               </CardProducts>
