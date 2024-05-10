@@ -9,7 +9,7 @@ const MenuLinks = [
   { id: 4, name: "Contact", path: "/contact" },
 ];
 
-const TopNavbar = ({ cart }) => {
+const TopNavbar = ({ cart, handleUpdateQuantity, handleRemoveItem }) => {
   const [showSidebar, setShowSidebar] = useState(false);
   const [showShoppingCart, setShowShoppingCart] = useState(false);
 
@@ -78,52 +78,74 @@ const TopNavbar = ({ cart }) => {
       </div>
       {/* Show Shopping Cart */}
       <div
-        className={`absolute overflow-auto top-full w-[28rem] h-screen bg-white text-black z-10 ${
+        className={`absolute overflow-auto top-full w-full lg:w-[25rem] h-screen bg-white text-black z-10 ${
           showShoppingCart ? "left-0" : "left-[100%]"
         }`}
       >
         <h1 className="text-4xl text-center py-4 border-b-primary border">
           Cart
         </h1>
-        <table className="text-left border-separate table-auto border-spacing-x-5">
-          <thead>
-            <tr>
-              <th>Product</th>
-              <th>Price</th>
-              <th>Quantity</th>
-              <th>Total</th>
-            </tr>
-          </thead>
-          {/* <tbody>
-            {cart.map((item) => {
-              const product = products.find(
-                (product) => product.id === item.id
-              );
-              if (product) {
-                return (
-                  <tr key={item.id}>
-                    <td>{product.name}</td>
-                    <td>
-                      Rp{" "}
-                      {product.price.toLocaleString("id-ID", {
-                        styles: "currency",
-                        currency: "IDR",
-                      })}
-                    </td>
-                    <td>{item.qty}</td>
-                    <td>
-                      Rp{" "}
-                      {(item.qty * product.price).toLocaleString("id-ID", {
-                        styles: "currency",
-                        currency: "IDR",
-                      })}
-                    </td>
-                  </tr>
-                );
-              }
-            })}
-          </tbody> */}
-        </table>
+        {cart && cart.length > 0 ? (
+          // Tampilkan tabel keranjang belanja jika ada item di dalam cart
+          <table className="text-left border-separate table-auto border-spacing-x-4 mx-auto sm:border-spacing-x-10 lg:border-spacing-x-4">
+            <thead>
+              <tr>
+                <th>Product</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Total</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              {cart.map((item) => (
+                <tr key={item.id}>
+                  <td>{item.name}</td>
+                  <td>IDR {item.price.toLocaleString("id-ID")}</td>
+                  <td className="text-center">
+                    {/* Container untuk tombol +, Quantity, dan tombol - */}
+                    <div className="flex items-center justify-center">
+                      {/* Tombol + untuk menambah jumlah */}
+                      <button
+                        onClick={() =>
+                          handleUpdateQuantity(item.id, item.quantity + 1)
+                        }
+                        className="border px-1 rounded-full bg-primary hover:bg-white mr-2"
+                      >
+                        +
+                      </button>
+                      {/* Tampilan jumlah item */}
+                      <span>{item.quantity}</span>
+                      {/* Tombol - untuk mengurangi jumlah */}
+                      <button
+                        onClick={() =>
+                          handleUpdateQuantity(item.id, item.quantity - 1)
+                        }
+                        className="border px-1 rounded-full bg-primary hover:bg-white ml-2"
+                        disabled={item.quantity <= 1}
+                      >
+                        -
+                      </button>
+                    </div>
+                  </td>
+                  <td>IDR {item.price * item.quantity}</td>
+                  <td>
+                    {/* Tombol untuk menghapus item dari keranjang */}
+                    <button
+                      onClick={() => handleRemoveItem(item.id)}
+                      className="border p-2 rounded-full bg-primary hover:bg-white"
+                    >
+                      D
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        ) : (
+          // Tampilkan pesan "Cart is empty" jika keranjang kosong
+          <div className="text-center text-gray-600 mt-4">Cart is empty</div>
+        )}
       </div>
     </nav>
   );

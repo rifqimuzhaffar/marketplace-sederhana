@@ -20,12 +20,16 @@ const Body = (props) => {
   return <h3 className="text-xl">-- {name} --</h3>;
 };
 
-const Footer = ({ productId, handleAddToCart }) => {
+const Footer = ({ productId, handleAddToCart, cart, handleUpdateQuantity }) => {
   const item = products.find((product) => product.id === productId);
 
   const handleClick = () => {
     if (item) {
       handleAddToCart(item);
+      // Memastikan handleUpdateQuantity adalah fungsi sebelum dipanggil
+      if (typeof handleUpdateQuantity === "function") {
+        handleUpdateQuantity(item.id, item.quantity + 1);
+      }
     }
   };
 
@@ -33,13 +37,7 @@ const Footer = ({ productId, handleAddToCart }) => {
     <div className="flex justify-between items-center">
       {item && (
         <>
-          <p>
-            IDR{" "}
-            {item.price.toLocaleString("id-ID", {
-              style: "currency",
-              currency: "IDR",
-            })}
-          </p>
+          <p>IDR {item.price.toLocaleString("id-ID")}</p>
           <button
             onClick={handleClick}
             className="border p-2 rounded-full bg-black hover:bg-white"

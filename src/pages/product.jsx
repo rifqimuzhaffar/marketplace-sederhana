@@ -50,16 +50,50 @@ export const products = [
 
 const Product = () => {
   const [cart, setCart] = useState([]);
+  const [addedMessage, setAddedMessage] = useState("");
 
   const handleAddToCart = (item) => {
-    const updatedCart = Array.isArray(cart) ? cart : [];
-    setCart([...updatedCart, item]);
-    console.log(item);
+    const existingItem = cart.find((cartItem) => cartItem.id === item.id);
+
+    if (existingItem) {
+      const updatedCart = cart.map((cartItem) =>
+        cartItem.id === item.id
+          ? { ...cartItem, quantity: cartItem.quantity + 1 }
+          : cartItem
+      );
+      setCart(updatedCart);
+      setAddedMessage(`${item.name} already in the cart`);
+    } else {
+      setCart([...cart, { ...item, quantity: 1 }]);
+      setAddedMessage(`${item.name} added to the cart`);
+    }
+
+    // Hapus pesan setelah 2 detik
+    setTimeout(() => {
+      setAddedMessage("");
+    }, 2000);
+  };
+
+  const handleUpdateQuantity = (productId, newQuantity) => {
+    // Implement update quantity logic here
+    const updatedCart = cart.map((item) =>
+      item.id === productId ? { ...item, quantity: newQuantity } : item
+    );
+    setCart(updatedCart);
+  };
+
+  const handleRemoveItem = (productId) => {
+    const updatedCart = cart.filter((item) => item.id !== productId);
+    setCart(updatedCart);
   };
 
   return (
     <>
-      <TopNavbar cart={cart} />
+      <TopNavbar
+        cart={cart}
+        handleUpdateQuantity={handleUpdateQuantity}
+        handleRemoveItem={handleRemoveItem}
+      />
       <section className="bg-black bg-homepage min-h-screen text-white bg-cover object-cover bg-no-repeat bg-bottom flex pb-10">
         <div className="mx-auto">
           <Tittle />
@@ -75,9 +109,15 @@ const Product = () => {
               </CardProducts>
             ))}
           </div>
+          {addedMessage && (
+            <div className="mt-4 text-center text-green-500">
+              {addedMessage}
+            </div>
+          )}
         </div>
       </section>
     </>
   );
 };
+
 export default Product;
