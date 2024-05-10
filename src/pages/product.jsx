@@ -91,8 +91,14 @@ const Product = () => {
         handleUpdateQuantity={handleUpdateQuantity}
         handleRemoveItem={handleRemoveItem}
       />
+
       <section className="bg-black bg-homepage min-h-screen text-white bg-cover object-cover bg-no-repeat bg-bottom flex pb-10">
-        <div className="mx-auto">
+        <div className="relative mx-auto">
+          {addedMessage && (
+            <div className="fixed z-40 top-20 p-1 rounded-lg right-1 text-center text-white bg-red-600">
+              {addedMessage}
+            </div>
+          )}
           <Tittle />
           <div className="flex flex-wrap mt-[1.5rem] justify-center gap-6 md:gap-12 md:px-[5px] lg:px-[5rem]">
             {products.map((product) => (
@@ -106,11 +112,6 @@ const Product = () => {
               </CardProducts>
             ))}
           </div>
-          {addedMessage && (
-            <div className="mt-4 text-center text-green-500">
-              {addedMessage}
-            </div>
-          )}
         </div>
       </section>
     </>
