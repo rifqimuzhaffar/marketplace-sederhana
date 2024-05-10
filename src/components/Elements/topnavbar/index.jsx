@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { FiSearch, FiShoppingCart, FiMenu } from "react-icons/fi";
+import { FiSearch, FiShoppingCart, FiMenu, FiTrash2 } from "react-icons/fi";
 import { Link } from "react-router-dom";
 
 const MenuLinks = [
@@ -21,6 +21,14 @@ const TopNavbar = ({ cart, handleUpdateQuantity, handleRemoveItem }) => {
   const toggleShowShoppingCart = (e) => {
     e.preventDefault();
     setShowShoppingCart(!showShoppingCart);
+  };
+
+  const calculateTotalPrice = () => {
+    let total = 0;
+    cart.forEach((item) => {
+      total += item.price * item.quantity;
+    });
+    return total;
   };
 
   const navItems = MenuLinks.map((data) => (
@@ -68,7 +76,7 @@ const TopNavbar = ({ cart, handleUpdateQuantity, handleRemoveItem }) => {
       </div>
       {/* Sidebar */}
       <div
-        className={`absolute top-full w-[15rem] h-screen bg-black/80 text-white z-10 ${
+        className={`absolute top-full w-[15rem] h-screen bg-black/80 text-white z-20 ${
           showSidebar ? "right-0" : "right-[100%]"
         }`}
       >
@@ -76,7 +84,7 @@ const TopNavbar = ({ cart, handleUpdateQuantity, handleRemoveItem }) => {
           <ul className="space-y-4">{navItems}</ul>
         </div>
       </div>
-      {/* Show Shopping Cart */}
+      {/* Shopping Cart */}
       <div
         className={`absolute overflow-auto top-full w-full lg:w-[25rem] h-screen bg-white text-black z-10 ${
           showShoppingCart ? "left-0" : "left-[100%]"
@@ -86,8 +94,7 @@ const TopNavbar = ({ cart, handleUpdateQuantity, handleRemoveItem }) => {
           Cart
         </h1>
         {cart && cart.length > 0 ? (
-          // Tampilkan tabel keranjang belanja jika ada item di dalam cart
-          <table className="text-left border-separate table-auto border-spacing-x-4 mx-auto sm:border-spacing-x-10 lg:border-spacing-x-4">
+          <table className="text-left border-separate table-auto border-spacing-x-2 mx-auto sm:border-spacing-x-10 lg:border-spacing-x-4">
             <thead>
               <tr>
                 <th>Product</th>
@@ -101,50 +108,61 @@ const TopNavbar = ({ cart, handleUpdateQuantity, handleRemoveItem }) => {
               {cart.map((item) => (
                 <tr key={item.id}>
                   <td>{item.name}</td>
-                  <td>IDR {item.price.toLocaleString("id-ID")}</td>
+                  <td>{item.price.toLocaleString("id-ID")}</td>
                   <td className="text-center">
-                    {/* Container untuk tombol +, Quantity, dan tombol - */}
                     <div className="flex items-center justify-center">
-                      {/* Tombol + untuk menambah jumlah */}
-                      <button
-                        onClick={() =>
-                          handleUpdateQuantity(item.id, item.quantity + 1)
-                        }
-                        className="border px-1 rounded-full bg-primary hover:bg-white mr-2"
-                      >
-                        +
-                      </button>
-                      {/* Tampilan jumlah item */}
-                      <span>{item.quantity}</span>
-                      {/* Tombol - untuk mengurangi jumlah */}
                       <button
                         onClick={() =>
                           handleUpdateQuantity(item.id, item.quantity - 1)
                         }
-                        className="border px-1 rounded-full bg-primary hover:bg-white ml-2"
+                        className="w-5 h-5 flex justify-center items-center border px-1 rounded-full bg-primary hover:bg-white ml-2"
                         disabled={item.quantity <= 1}
                       >
                         -
                       </button>
+                      <span>{item.quantity}</span>
+                      <button
+                        onClick={() =>
+                          handleUpdateQuantity(item.id, item.quantity + 1)
+                        }
+                        className="w-5 h-5 flex justify-center items-center border px-1 rounded-full bg-primary hover:bg-white mr-2"
+                      >
+                        +
+                      </button>
                     </div>
                   </td>
-                  <td>IDR {item.price * item.quantity}</td>
+                  <td>{item.price * item.quantity}</td>
                   <td>
-                    {/* Tombol untuk menghapus item dari keranjang */}
                     <button
                       onClick={() => handleRemoveItem(item.id)}
                       className="border p-2 rounded-full bg-primary hover:bg-white"
                     >
-                      D
+                      <FiTrash2 />
                     </button>
                   </td>
                 </tr>
               ))}
             </tbody>
+            <tfoot>
+              <tr>
+                <td colSpan="3" className="text-right font-semibold py-4">
+                  Total:
+                </td>
+                <td colSpan="2" className="text-left font-bold py-4">
+                  IDR {calculateTotalPrice().toLocaleString("id-ID")}
+                </td>
+              </tr>
+            </tfoot>
           </table>
         ) : (
-          // Tampilkan pesan "Cart is empty" jika keranjang kosong
           <div className="text-center text-gray-600 mt-4">Cart is empty</div>
+        )}
+        {cart && cart.length > 0 && (
+          <div className="text-right mt-4 pr-4">
+            <button className="bg-primary text-white px-4 py-2 rounded-md hover:bg-white hover:text-primary border border-primary transition-colors duration-300">
+              Checkout
+            </button>
+          </div>
         )}
       </div>
     </nav>

@@ -11,8 +11,6 @@ const Button = (props) => {
     </button>
   );
 };
-
-// Definisi propTypes untuk memvalidasi props
 Button.propTypes = {
   children: PropTypes.node.isRequired,
   color: PropTypes.string,

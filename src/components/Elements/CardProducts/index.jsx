@@ -26,7 +26,6 @@ const Footer = ({ productId, handleAddToCart, cart, handleUpdateQuantity }) => {
   const handleClick = () => {
     if (item) {
       handleAddToCart(item);
-      // Memastikan handleUpdateQuantity adalah fungsi sebelum dipanggil
       if (typeof handleUpdateQuantity === "function") {
         handleUpdateQuantity(item.id, item.quantity + 1);
       }

@@ -67,15 +67,12 @@ const Product = () => {
       setCart([...cart, { ...item, quantity: 1 }]);
       setAddedMessage(`${item.name} added to the cart`);
     }
-
-    // Hapus pesan setelah 2 detik
     setTimeout(() => {
       setAddedMessage("");
     }, 2000);
   };
 
   const handleUpdateQuantity = (productId, newQuantity) => {
-    // Implement update quantity logic here
     const updatedCart = cart.map((item) =>
       item.id === productId ? { ...item, quantity: newQuantity } : item
     );
