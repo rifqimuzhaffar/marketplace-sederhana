@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { FiSearch, FiMenu, FiShoppingCart } from "react-icons/fi";
 import { Link } from "react-router-dom";
 import { Sidebar, toggleSidebarFn } from "../Sidebar";
