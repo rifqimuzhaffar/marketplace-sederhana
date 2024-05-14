@@ -1,12 +1,7 @@
-import { useState } from "react";
-import {
-  FiSearch,
-  FiShoppingCart,
-  FiMenu,
-  FiTrash2,
-  FiArrowLeft,
-} from "react-icons/fi";
+import { FiSearch, FiMenu, FiShoppingCart } from "react-icons/fi";
 import { Link } from "react-router-dom";
+import { Sidebar, toggleSidebarFn } from "../Sidebar";
+import { ShoppingCart, toggleShoppingCartFn } from "../ShoppingCart";
 
 const MenuLinks = [
   { id: 1, name: "Home", path: "/" },
@@ -15,28 +10,34 @@ const MenuLinks = [
   { id: 4, name: "Contact", path: "/contact" },
 ];
 
+export const navItems = MenuLinks.map((data) => (
+  <li key={data.id}>
+    <Link
+      to={data.path}
+      className="px-4 font-semibold text-white hover:text-primary relative group"
+    >
+      {data.name}
+      <span className="absolute left-0 bottom-0 w-full h-0.5 bg-primary transform scale-x-0 group-hover:scale-x-50 transition-transform duration-300"></span>
+    </Link>
+  </li>
+));
+
 const TopNavbar = ({ cart, handleUpdateQuantity, handleRemoveItem }) => {
-  const [showSidebar, setShowSidebar] = useState(false);
-  const [showShoppingCart, setShowShoppingCart] = useState(false);
   const [checkedOut, setCheckedOut] = useState(false);
   const [purchaseHistory, setPurchaseHistory] = useState([]);
 
-  const toggleSidebar = (e) => {
+  const handleMenuClickSidebar = (e) => {
     e.preventDefault();
-    setShowSidebar(!showSidebar);
+    if (toggleSidebarFn) {
+      toggleSidebarFn(e);
+    }
   };
 
-  const toggleShowShoppingCart = (e) => {
+  const handleMenuClickShoppingCart = (e) => {
     e.preventDefault();
-    setShowShoppingCart(!showShoppingCart);
-  };
-
-  const calculateTotalPrice = () => {
-    let total = 0;
-    cart.forEach((item) => {
-      total += item.price * item.quantity;
-    });
-    return total;
+    if (toggleShoppingCartFn) {
+      toggleShoppingCartFn(e);
+    }
   };
 
   const handleCheckout = () => {
@@ -57,17 +58,13 @@ const TopNavbar = ({ cart, handleUpdateQuantity, handleRemoveItem }) => {
     setCheckedOut(false);
   };
 
-  const navItems = MenuLinks.map((data) => (
-    <li key={data.id}>
-      <Link
-        to={data.path}
-        className="px-4 font-semibold text-white hover:text-primary relative group"
-      >
-        {data.name}
-        <span className="absolute left-0 bottom-0 w-full h-0.5 bg-primary transform scale-x-0 group-hover:scale-x-50 transition-transform duration-300"></span>
-      </Link>
-    </li>
-  ));
+  const calculateTotalPrice = () => {
+    let total = 0;
+    cart.forEach((item) => {
+      total += item.price * item.quantity;
+    });
+    return total;
+  };
 
   return (
     <nav className="bg-black/80 border-b border-[#513c28] flex justify-between items-center px-10 py-[1.4rem] fixed top-0 left-0 right-0 z-50">
@@ -85,165 +82,33 @@ const TopNavbar = ({ cart, handleUpdateQuantity, handleRemoveItem }) => {
         <a
           href="#"
           className="relative text-white hover:text-primary transition-colors duration-300"
-          onClick={toggleShowShoppingCart}
+          onClick={handleMenuClickShoppingCart}
         >
           <span className="absolute w-3 h-3 rounded-full bg-red-500 top-4 left-4 text-[8px] text-center md:w-5 md:h-5 md:text-[12px]">
             {cart && cart.length}
           </span>
           <FiShoppingCart className="h-6 w-6" />
         </a>
+
         <a
           href="#"
           className="lg:hidden text-white hover:text-primary transition-colors duration-300"
-          onClick={toggleSidebar}
+          onClick={handleMenuClickSidebar}
         >
           <FiMenu className="h-6 w-6" />
         </a>
       </div>
-      {/* Sidebar */}
-      <div
-        className={`absolute top-full w-[15rem] h-screen bg-black/80 text-white z-20 ${
-          showSidebar ? "right-0" : "right-[100%]"
-        }`}
-      >
-        <div className="px-4 py-8 text-center">
-          <ul className="space-y-4">{navItems}</ul>
-        </div>
-      </div>
-      {/* Shopping Cart */}
-      <div
-        className={`absolute overflow-auto top-full w-full lg:w-[25rem] h-screen bg-white text-black z-10 ${
-          showShoppingCart ? "left-0" : "left-[100%]"
-        }`}
-      >
-        {checkedOut ? (
-          <div>
-            <div className="flex items-center justify-between">
-              <button className="ml-2" onClick={handleBackToCart}>
-                <FiArrowLeft className="h-8 w-8" />
-              </button>
-              <h1 className="text-2xl flex-1 text-center py-2 mr-6">
-                Purchase History
-              </h1>
-            </div>
-            <ul className="divide-y divide-black">
-              {purchaseHistory.map((purchase, index) => (
-                <li key={index} className="px-4">
-                  <div>
-                    <p className="text-lg">{purchase.time}</p>
-                    {/* Render each purchased item */}
-                    {purchase.product && (
-                      <div className="flex justify-between items-center">
-                        <p>
-                          {purchase.product.name} x {purchase.product.quantity}
-                        </p>
-                        <p>
-                          IDR{" "}
-                          {purchase.product.price *
-                            purchase.product.quantity.toLocaleString("id-ID")}
-                        </p>
-                      </div>
-                    )}
-                  </div>
-                </li>
-              ))}
-            </ul>
-            {/* Calculate total purchase */}
-            <p className="text-xl mt-4">
-              Total Pembelian: IDR{" "}
-              {purchaseHistory
-                .reduce((total, purchase) => {
-                  return (
-                    total + purchase.product.price * purchase.product.quantity
-                  );
-                }, 0)
-                .toLocaleString("id-ID")}
-            </p>
-          </div>
-        ) : (
-          <div>
-            <h1 className="text-4xl text-center py-4 border-b-primary border">
-              Cart
-            </h1>
-            {cart && cart.length > 0 ? (
-              <table className="text-left border-separate table-auto border-spacing-x-2 mx-auto sm:border-spacing-x-10 lg:border-spacing-x-4">
-                <thead>
-                  <tr>
-                    <th>Product</th>
-                    <th>Price</th>
-                    <th>Quantity</th>
-                    <th>Total</th>
-                    <th></th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {cart.map((item) => (
-                    <tr key={item.id}>
-                      <td>{item.name}</td>
-                      <td>{item.price.toLocaleString("id-ID")}</td>
-                      <td className="text-center">
-                        <div className="flex items-center justify-center">
-                          <button
-                            onClick={() =>
-                              handleUpdateQuantity(item.id, item.quantity - 1)
-                            }
-                            className="w-5 h-5 flex justify-center items-center border px-1 rounded-full bg-primary hover:bg-white ml-2"
-                            disabled={item.quantity <= 1}
-                          >
-                            -
-                          </button>
-                          <span>{item.quantity}</span>
-                          <button
-                            onClick={() =>
-                              handleUpdateQuantity(item.id, item.quantity + 1)
-                            }
-                            className="w-5 h-5 flex justify-center items-center border px-1 rounded-full bg-primary hover:bg-white mr-2"
-                          >
-                            +
-                          </button>
-                        </div>
-                      </td>
-                      <td>{item.price * item.quantity}</td>
-                      <td>
-                        <button
-                          onClick={() => handleRemoveItem(item.id)}
-                          className="border p-2 rounded-full bg-primary hover:bg-white"
-                        >
-                          <FiTrash2 />
-                        </button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-                <tfoot>
-                  <tr>
-                    <td colSpan="3" className="text-right font-semibold py-4">
-                      Total:
-                    </td>
-                    <td colSpan="2" className="text-left font-bold py-4">
-                      IDR {calculateTotalPrice().toLocaleString("id-ID")}
-                    </td>
-                  </tr>
-                </tfoot>
-              </table>
-            ) : (
-              <div className="text-center text-gray-600 mt-4">
-                Cart is empty
-              </div>
-            )}
-            {cart && cart.length > 0 && (
-              <div className="text-right mt-4 pr-4">
-                <button
-                  onClick={handleCheckout}
-                  className="bg-primary text-white px-4 py-2 rounded-md hover:bg-white hover:text-primary border border-primary transition-colors duration-300"
-                >
-                  Checkout
-                </button>
-              </div>
-            )}
-          </div>
-        )}
-      </div>
+      <Sidebar />
+      <ShoppingCart
+        cart={cart}
+        handleUpdateQuantity={handleUpdateQuantity}
+        handleRemoveItem={handleRemoveItem}
+        calculateTotalPrice={calculateTotalPrice}
+        handleCheckout={handleCheckout}
+        handleBackToCart={handleBackToCart}
+        checkedOut={checkedOut}
+        purchaseHistory={purchaseHistory}
+      />
     </nav>
   );
 };

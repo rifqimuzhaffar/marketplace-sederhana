@@ -1,5 +1,5 @@
 import { FiShoppingCart } from "react-icons/fi";
-import { products } from "../../../pages/product";
+import products from "../../../pages/data/data";
 
 const CardProducts = (props) => {
   const { children } = props;
@@ -20,7 +20,7 @@ const Body = (props) => {
   return <h3 className="text-xl">-- {name} --</h3>;
 };
 
-const Footer = ({ productId, handleAddToCart, cart, handleUpdateQuantity }) => {
+const Footer = ({ productId, handleAddToCart, handleUpdateQuantity }) => {
   const item = products.find((product) => product.id === productId);
 
   const handleClick = () => {
