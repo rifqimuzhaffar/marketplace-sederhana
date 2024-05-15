@@ -1,7 +1,7 @@
 import TopNavbar from "../components/Elements/topnavbar";
 import Tittle from "../components/Elements/Tittle";
 import CardProducts from "../components/Elements/CardProducts";
-import products from "../data/data";
+import products from "../data/dataProducts";
 import useCart from "../hooks/useCart";
 
 const Product = () => {
