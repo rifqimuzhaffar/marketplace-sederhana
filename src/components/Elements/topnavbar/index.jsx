@@ -69,9 +69,12 @@ const TopNavbar = ({ cart, handleUpdateQuantity, handleRemoveItem }) => {
 
   return (
     <nav className="bg-black/80 border-b border-[#513c28] flex justify-between items-center px-10 py-[1.4rem] fixed top-0 left-0 right-0 z-50">
-      <a href="#" className="text-primary font-semibold text-2xl sm:text-3xl">
-        TCoffee
-      </a>
+      <button
+        id="title"
+        className="text-primary font-semibold text-2xl sm:text-3xl"
+      >
+        <Link to="/">TCoffee</Link>
+      </button>
       <ul className="hidden lg:flex">{navItems}</ul>
       <div className="flex gap-2">
         <a

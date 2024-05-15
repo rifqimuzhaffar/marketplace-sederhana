@@ -1,3 +1,4 @@
+import Tittle from "../components/Elements/Tittle";
 import TopNavbar from "../components/Elements/topnavbar";
 import useCart from "../hooks/useCart";
 
@@ -10,8 +11,8 @@ const Contact = () => {
         handleUpdateQuantity={handleUpdateQuantity}
         handleRemoveItem={handleRemoveItem}
       />
-      <section className="bg-black bg-homepage min-h-screen text-slate-300 bg-cover object-cover bg-no-repeat bg-bottom flex items-center">
-        <p className="m-auto font-bold text-3xl">Coming Soon</p>
+      <section className="bg-black bg-homepage min-h-screen text-slate-300 bg-cover object-cover bg-no-repeat bg-bottom flex">
+        <Tittle>Contact Us</Tittle>
       </section>
     </div>
   );

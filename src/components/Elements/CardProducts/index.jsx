@@ -1,5 +1,5 @@
 import { FiShoppingCart } from "react-icons/fi";
-import products from "../../../pages/data/data";
+import products from "../../../data/data";
 
 const CardProducts = (props) => {
   const { children } = props;

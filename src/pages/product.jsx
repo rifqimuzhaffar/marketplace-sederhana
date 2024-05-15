@@ -1,7 +1,7 @@
 import TopNavbar from "../components/Elements/topnavbar";
 import Tittle from "../components/Elements/Tittle";
 import CardProducts from "../components/Elements/CardProducts";
-import products from "./data/data";
+import products from "../data/data";
 import useCart from "../hooks/useCart";
 
 const Product = () => {
@@ -28,7 +28,7 @@ const Product = () => {
               {addedMessage}
             </div>
           )}
-          <Tittle />
+          <Tittle>Our Product</Tittle>
           <div className="flex flex-wrap mt-[1.5rem] justify-center gap-6 md:gap-12 md:px-[5px] lg:px-[5rem]">
             {products.map((product) => (
               <CardProducts key={product.id}>

@@ -1,4 +1,5 @@
 import Button from "../Button";
+import { Link } from "react-router-dom";
 
 const HomeHero = () => {
   return (
@@ -12,9 +13,11 @@ const HomeHero = () => {
           Embrace the richness of our brews and savor the moment.
         </p>
         <div className="flex justify-start gap-4 items-center">
-          <Button color="bg-primary">Shop Now</Button>
+          <Button color="bg-primary">
+            <Link to="/product">Shop Now</Link>
+          </Button>
           <Button color="bg-white" textColor="text-primary">
-            Contact Us
+            <Link to="/contact">Contact Us</Link>
           </Button>
         </div>
       </main>
