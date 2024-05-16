@@ -57,7 +57,7 @@ const About = () => {
               );
             })}
           </div>
-          <div className="flex flex-col justify-center items-center text-center px-10">
+          <div className="flex flex-col justify-center items-center text-center px-4">
             <h3 className="text-3xl font-bold mb-6">
               What makes our coffee{" "}
               <span className="text-yellow-400">special</span> ?
