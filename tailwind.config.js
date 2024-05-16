@@ -9,6 +9,11 @@ export default {
       },
       backgroundImage: {
         homepage: "url(/images/bg-home.jpg)",
+        productpage: "url(/images/bg-product.jpg)",
+        aboutpage: "url(/images/bg-about1.jpeg)",
+      },
+      screens: {
+        phone: "376px",
       },
     },
   },

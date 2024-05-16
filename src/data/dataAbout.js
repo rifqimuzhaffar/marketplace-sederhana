@@ -1,27 +1,27 @@
 const cards = [
   {
     header: "Img-1",
-    image: "/images/espresso.jpg",
+    image: "/images/about-1.jpg",
     text: `Description`,
   },
   {
     header: "Img-2",
-    image: "/images/cappuccino.jpg",
+    image: "/images/about-2.jpg",
     text: `Description`,
   },
   {
     header: "Img-3",
-    image: "/images/Espresso-Romano.jpg",
+    image: "/images/about-3.jpg",
     text: `Description`,
   },
   {
     header: "Img-4",
-    image: "/images/vanilla-latte.jpg",
+    image: "/images/about-4.jpg",
     text: `Description`,
   },
   {
     header: "Img-5",
-    image: "/images/Sweet-Mocha.jpg",
+    image: "/images/about-5.jpg",
     text: `Description`,
   },
 ];
