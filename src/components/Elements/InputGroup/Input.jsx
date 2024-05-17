@@ -4,7 +4,7 @@ const Input = (props) => {
     <input
       type={type}
       placeholder={placeholder}
-      className="w-full p-6 bg-black text-[1rem]"
+      className="w-full py-6 pl-2 pr-6 bg-black text-[1rem]"
       name={name}
     />
   );

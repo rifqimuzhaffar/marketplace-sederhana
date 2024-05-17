@@ -28,7 +28,9 @@ const Product = () => {
               {addedMessage}
             </div>
           )}
-          <Tittle textColor="text-white">Our Product</Tittle>
+          <Tittle textColor="text-white" textSize="text-3xl">
+            Our Product
+          </Tittle>
           <div className="flex flex-wrap mt-[1.5rem] justify-center gap-6 md:gap-12 md:px-[5px] lg:px-[5rem] mb-5">
             {products.map((product) => (
               <CardProducts key={product.id}>

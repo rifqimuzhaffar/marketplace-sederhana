@@ -1,9 +1,9 @@
 const Tittle = (props) => {
-  const { children, textColor } = props;
+  const { children, textColor, textSize } = props;
   return (
     <div className="mx-auto mt-[6rem]">
       <h2
-        className={`text-3xl lg:text-5xl font-extrabold underline text-center ${textColor}`}
+        className={`${textSize} lg:text-5xl font-extrabold underline text-center ${textColor}`}
       >
         {children}
       </h2>
