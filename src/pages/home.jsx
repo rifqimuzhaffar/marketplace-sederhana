@@ -1,5 +1,5 @@
 import TopNavbar from "../components/Elements/topnavbar";
-import HomeHero from "../components/Elements/HomeHero";
+import HomeHero from "../components/Fragments/HomeFragments";
 import useCart from "../hooks/useCart";
 
 const Home = () => {
@@ -12,9 +12,7 @@ const Home = () => {
         handleUpdateQuantity={handleUpdateQuantity}
         handleRemoveItem={handleRemoveItem}
       />
-      <section className="bg-black bg-homepage min-h-screen text-slate-300 bg-cover object-cover bg-no-repeat bg-bottom flex items-center">
-        <HomeHero />
-      </section>
+      <HomeHero />
     </>
   );
 };
