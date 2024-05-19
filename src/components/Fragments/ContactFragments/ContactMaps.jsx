@@ -6,7 +6,7 @@ const ContactMaps = () => {
       allowFullScreen=""
       loading="lazy"
       referrerPolicy="no-referrer-when-downgrade"
-      className="md:w-[500px] h-96"
+      className="md:w-full h-96"
     ></iframe>
   );
 };

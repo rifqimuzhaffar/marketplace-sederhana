@@ -1,5 +1,5 @@
 import TopNavbar from "../components/Elements/topnavbar";
-import HomeHero from "../components/Fragments/HomeFragments";
+import HomeLayouts from "../components/Layouts/HomeLayouts";
 import useCart from "../hooks/useCart";
 
 const Home = () => {
@@ -12,7 +12,7 @@ const Home = () => {
         handleUpdateQuantity={handleUpdateQuantity}
         handleRemoveItem={handleRemoveItem}
       />
-      <HomeHero />
+      <HomeLayouts />
     </>
   );
 };

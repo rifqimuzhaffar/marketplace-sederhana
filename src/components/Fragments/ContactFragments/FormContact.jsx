@@ -4,7 +4,7 @@ import Button from "../../Elements/Button";
 
 const FormContact = () => {
   return (
-    <form action="" className="flex flex-col justify-center">
+    <form action="" className="flex flex-col justify-center w-full">
       <InputGroup
         label={<FiUser className="w-6 h-6" />}
         placeholder="Insert your name"

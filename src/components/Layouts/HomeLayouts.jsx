@@ -1,7 +1,7 @@
-import Button from "../../Elements/Button";
 import { Link } from "react-router-dom";
+import Button from "../Elements/Button";
 
-const HomeHero = () => {
+const HomeLayouts = () => {
   return (
     <>
       <section className="bg-black bg-homepage min-h-screen text-slate-300 bg-cover object-cover bg-no-repeat bg-bottom flex items-center">
@@ -26,4 +26,4 @@ const HomeHero = () => {
     </>
   );
 };
-export default HomeHero;
+export default HomeLayouts;

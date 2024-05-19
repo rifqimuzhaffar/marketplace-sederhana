@@ -10,7 +10,7 @@ const ContactLayouts = () => {
         Feel free to contact us if you have any questions or would like to make
         a reservation !
       </h3>
-      <div className="mt-4 mb-8 flex flex-col gap-8 drop-shadow-md bg-black/80 p-8 rounded-xl lg:flex-row">
+      <div className="mt-4 mb-8 flex flex-col gap-8 drop-shadow-md bg-black/80 p-8 rounded-xl lg:flex-row md:w-10/12">
         <ContactMaps />
         <FormContact />
       </div>

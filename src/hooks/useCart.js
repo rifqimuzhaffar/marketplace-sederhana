@@ -22,10 +22,10 @@ const useCart = () => {
           : cartItem
       );
       setCart(updatedCart);
-      setAddedMessage(`${item.name} sudah ada di keranjang`);
+      setAddedMessage(`${item.name} Already at cart`);
     } else {
       setCart([...cart, { ...item, quantity: 1 }]);
-      setAddedMessage(`${item.name} ditambahkan ke keranjang`);
+      setAddedMessage(`${item.name} Add to cart`);
     }
     setTimeout(() => {
       setAddedMessage("");
