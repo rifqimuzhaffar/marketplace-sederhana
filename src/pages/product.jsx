@@ -66,7 +66,7 @@ const Product = () => {
                 </CardProducts>
               ))
             ) : (
-              <Link to="/product" className="hover:text-black">
+              <Link to="/product" className="hover:text-primary">
                 Back to Product
               </Link>
             )}
