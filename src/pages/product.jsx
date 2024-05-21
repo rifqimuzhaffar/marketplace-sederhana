@@ -15,7 +15,7 @@ const Product = () => {
     handleRemoveItem,
   } = useCart();
 
-  const [filteredProducts, setFilteredProducts] = useState([]);
+  const [filteredProduts, setFilteredProducts] = useState([]);
   const location = useLocation();
 
   useEffect(() => {
@@ -51,8 +51,8 @@ const Product = () => {
             Our Product
           </Tittle>
           <div className="flex flex-wrap mt-[1.5rem] justify-center gap-6 md:gap-12 md:px-[5px] lg:px-[5rem] mb-5">
-            {filteredProducts.length > 0 ? (
-              filteredProducts.map((product) => (
+            {filteredProduts.length > 0 ? (
+              filteredProduts.map((product) => (
                 <CardProducts key={product.id}>
                   <CardProducts.Header
                     image={product.image}
@@ -66,7 +66,7 @@ const Product = () => {
                 </CardProducts>
               ))
             ) : (
-              <Link to="/product" className="hover:text-primary">
+              <Link to="/product" className="hover:text-black">
                 Back to Product
               </Link>
             )}
