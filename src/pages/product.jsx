@@ -3,6 +3,8 @@ import Tittle from "../components/Elements/Tittle";
 import CardProducts from "../components/Elements/CardProducts";
 import products from "../data/dataProducts";
 import useCart from "../hooks/useCart";
+import { useEffect, useState } from "react";
+import { Link, useLocation } from "react-router-dom";
 
 const Product = () => {
   const {
@@ -12,6 +14,23 @@ const Product = () => {
     handleUpdateQuantity,
     handleRemoveItem,
   } = useCart();
+
+  const [filteredProducts, setFilteredProducts] = useState([]);
+  const location = useLocation();
+
+  useEffect(() => {
+    const queryParams = new URLSearchParams(location.search);
+    const searchQuery = queryParams.get("search");
+
+    if (searchQuery) {
+      const filtered = products.filter((product) =>
+        product.name.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+      setFilteredProducts(filtered);
+    } else {
+      setFilteredProducts(products);
+    }
+  }, [location.search]);
 
   return (
     <>
@@ -32,16 +51,25 @@ const Product = () => {
             Our Product
           </Tittle>
           <div className="flex flex-wrap mt-[1.5rem] justify-center gap-6 md:gap-12 md:px-[5px] lg:px-[5rem] mb-5">
-            {products.map((product) => (
-              <CardProducts key={product.id}>
-                <CardProducts.Header image={product.image} alt={product.alt} />
-                <CardProducts.Body name={product.name} />
-                <CardProducts.Footer
-                  productId={product.id}
-                  handleAddToCart={handleAddToCart}
-                />
-              </CardProducts>
-            ))}
+            {filteredProducts.length > 0 ? (
+              filteredProducts.map((product) => (
+                <CardProducts key={product.id}>
+                  <CardProducts.Header
+                    image={product.image}
+                    alt={product.alt}
+                  />
+                  <CardProducts.Body name={product.name} />
+                  <CardProducts.Footer
+                    productId={product.id}
+                    handleAddToCart={handleAddToCart}
+                  />
+                </CardProducts>
+              ))
+            ) : (
+              <Link to="/product" className="hover:text-primary">
+                Back to Product
+              </Link>
+            )}
           </div>
         </div>
       </section>

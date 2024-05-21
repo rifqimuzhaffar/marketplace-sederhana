@@ -3,6 +3,7 @@ import { FiSearch, FiMenu, FiShoppingCart } from "react-icons/fi";
 import { Link } from "react-router-dom";
 import { Sidebar, toggleSidebarFn } from "../Sidebar";
 import { ShoppingCart, toggleShoppingCartFn } from "../ShoppingCart";
+import { Search, toggleSearchFn } from "../Search";
 
 const MenuLinks = [
   { id: 1, name: "Home", path: "/" },
@@ -31,6 +32,13 @@ const TopNavbar = ({ cart, handleUpdateQuantity, handleRemoveItem }) => {
     e.preventDefault();
     if (toggleSidebarFn) {
       toggleSidebarFn(e);
+    }
+  };
+
+  const handleMenuClickSearch = (e) => {
+    e.preventDefault();
+    if (toggleSearchFn) {
+      toggleSearchFn(e);
     }
   };
 
@@ -80,6 +88,7 @@ const TopNavbar = ({ cart, handleUpdateQuantity, handleRemoveItem }) => {
         <a
           href="#"
           className="text-white hover:text-primary transition-colors duration-300"
+          onClick={handleMenuClickSearch}
         >
           <FiSearch className="h-6 w-6" />
         </a>
@@ -102,6 +111,7 @@ const TopNavbar = ({ cart, handleUpdateQuantity, handleRemoveItem }) => {
           <FiMenu className="h-6 w-6" />
         </a>
       </div>
+      <Search />
       <Sidebar />
       <ShoppingCart
         cart={cart}
