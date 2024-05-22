@@ -40,7 +40,7 @@ const Product = () => {
         handleRemoveItem={handleRemoveItem}
       />
 
-      <section className="bg-black bg-productpage min-h-screen text-white flex justify-center items-center">
+      <section className="bg-black bg-productpage min-h-screen text-white flex justify-center">
         <div className="relative mx-auto">
           {addedMessage && (
             <div className="fixed z-40 top-20 p-1 rounded-lg right-1 text-center text-white bg-red-600">

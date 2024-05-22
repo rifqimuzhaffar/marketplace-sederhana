@@ -4,8 +4,8 @@ import Accordions from "../Fragments/AboutFragments/Accordions";
 
 const AboutLayouts = () => {
   return (
-    <section className="bg-black bg-aboutpage min-h-screen text-slate-300 bg-cover bg-no-repeat bg-bottom flex items-center justify-center flex-col">
-      <Tittle textColor="text-black" textSize="text-3xl">
+    <section className="bg-black bg-aboutpage min-h-screen text-white bg-cover bg-no-repeat bg-bottom flex justify-center items-center flex-col">
+      <Tittle textColor="text-white" textSize="text-3xl">
         About Us
       </Tittle>
       <div className="flex gap-8 mt-14 flex-wrap lg:flex-nowrap pb-5 lg:px-14">

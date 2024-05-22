@@ -4,7 +4,7 @@ import FormContact from "../Fragments/ContactFragments/FormContact";
 
 const ContactLayouts = () => {
   return (
-    <section className="bg-black bg-homepage min-h-screen text-slate-300 bg-cover object-cover bg-no-repeat bg-bottom flex items-center flex-col justify-center">
+    <section className="bg-black bg-homepage min-h-screen text-white bg-cover object-cover bg-no-repeat bg-bottom flex items-center flex-col justify-center">
       <Tittle textSize="text-3xl">Contact Us</Tittle>
       <h3 className="mt-3 text-lg w-2/3 text-center leading-[20px] lg:w-1/3">
         Feel free to contact us if you have any questions or would like to make
