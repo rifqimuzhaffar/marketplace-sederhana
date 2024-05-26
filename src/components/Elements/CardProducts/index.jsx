@@ -1,18 +1,10 @@
 import { FiShoppingCart } from "react-icons/fi";
 import products from "../../../data/dataProducts";
-import AOS from "aos";
-import "aos/dist/aos.css";
 
-AOS.init();
 const CardProducts = (props) => {
   const { children } = props;
   return (
-    <div
-      className="text-center w-80 drop-shadow-md bg-black/80 px-6 py-4 rounded-xl flex flex-col justify-between gap-2"
-      data-aos="zoom-in"
-      data-aos-easing="ease-out-cubic"
-      data-aos-duration="1000"
-    >
+    <div className="text-center w-80 drop-shadow-md bg-black/80 px-6 py-4 rounded-xl flex flex-col justify-between gap-2">
       {children}
     </div>
   );

@@ -1,7 +1,5 @@
 import { Link } from "react-router-dom";
 import Button from "../Elements/Button";
-import AOS from "aos";
-import "aos/dist/aos.css";
 import { useEffect, useState } from "react";
 
 const HomeLayouts = () => {
@@ -50,5 +48,4 @@ const HomeLayouts = () => {
     </>
   );
 };
-AOS.init();
 export default HomeLayouts;
