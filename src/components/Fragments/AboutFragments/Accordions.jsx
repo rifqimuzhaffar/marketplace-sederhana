@@ -7,7 +7,12 @@ const Accordions = () => {
   const handleToggle = (index) => setActive(index);
 
   return (
-    <div className="flex gap-2 cursor-pointer mx-auto">
+    <div
+      className="flex gap-2 cursor-pointer mx-auto"
+      data-aos="fade-right"
+      data-aos-easing="linear"
+      data-aos-duration="1000"
+    >
       {cards.map((card, index) => {
         const isActive = active === index;
         return (
