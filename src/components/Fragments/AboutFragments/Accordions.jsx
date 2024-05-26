@@ -1,6 +1,10 @@
 import { FiCamera } from "react-icons/fi";
 import cards from "../../../data/dataAbout";
 import { useState } from "react";
+import AOS from "aos";
+import "aos/dist/aos.css";
+
+AOS.init();
 
 const Accordions = () => {
   const [active, setActive] = useState(0);

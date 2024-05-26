@@ -1,6 +1,9 @@
 import { FiShoppingCart } from "react-icons/fi";
 import products from "../../../data/dataProducts";
+import AOS from "aos";
+import "aos/dist/aos.css";
 
+AOS.init();
 const CardProducts = (props) => {
   const { children } = props;
   return (
