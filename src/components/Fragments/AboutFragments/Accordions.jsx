@@ -1,13 +1,22 @@
 import { FiCamera } from "react-icons/fi";
 import cards from "../../../data/dataAbout";
 import { useState } from "react";
+import AOS from "aos";
+import "aos/dist/aos.css";
+
+AOS.init();
 
 const Accordions = () => {
   const [active, setActive] = useState(0);
   const handleToggle = (index) => setActive(index);
 
   return (
-    <div className="flex gap-2 cursor-pointer mx-auto">
+    <div
+      className="flex gap-2 cursor-pointer mx-auto"
+      data-aos="fade-right"
+      data-aos-easing="linear"
+      data-aos-duration="1000"
+    >
       {cards.map((card, index) => {
         const isActive = active === index;
         return (
