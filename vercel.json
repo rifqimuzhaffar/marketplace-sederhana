@@ -8,6 +8,13 @@
   ],
   "routes": [
     {
+      "src": "/(.*\\.js|.*\\.css|.*\\.png|.*\\.jpg|.*\\.svg|.*\\.gif|.*\\.woff|.*\\.woff2|.*\\.ttf|.*\\.eot|.*\\.ico)",
+      "headers": {
+        "cache-control": "max-age=31536000, immutable"
+      },
+      "dest": "/$1"
+    },
+    {
       "src": "/(.*)",
       "dest": "/index.html"
     }
