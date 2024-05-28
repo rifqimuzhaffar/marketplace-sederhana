@@ -1,8 +1,8 @@
 import TopNavbar from "../components/Elements/topnavbar";
 import useCart from "../hooks/useCart";
-import LoginLayout from "../components/Layouts/LoginLayout";
+import LoginLayout from "../components/Layouts/RegisterLayout";
 
-const Login = () => {
+const Register = () => {
   const { cart, handleUpdateQuantity, handleRemoveItem } = useCart();
   return (
     <>
@@ -15,4 +15,4 @@ const Login = () => {
     </>
   );
 };
-export default Login;
+export default Register;

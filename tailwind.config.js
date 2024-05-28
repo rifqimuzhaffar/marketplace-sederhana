@@ -11,6 +11,7 @@ export default {
         homepage: "url(/images/bg-home.jpg)",
         productpage: "url(/images/bg-product.jpg)",
         aboutpage: "url(/images/bg-about1.jpeg)",
+        loginpage: "url(/images/bg-login.jpg)",
       },
       screens: {
         phone: "376px",
