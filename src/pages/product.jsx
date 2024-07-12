@@ -1,10 +1,10 @@
 import TopNavbar from "../components/Elements/topnavbar";
 import Tittle from "../components/Elements/Tittle";
 import CardProducts from "../components/Elements/CardProducts";
-import products from "../data/dataProducts";
 import useCart from "../hooks/useCart";
 import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
+import axios from "axios";
 
 const Product = () => {
   const {
@@ -15,22 +15,38 @@ const Product = () => {
     handleRemoveItem,
   } = useCart();
 
+  const [allProducts, setAllProducts] = useState([]);
   const [filteredProduts, setFilteredProducts] = useState([]);
   const location = useLocation();
 
   useEffect(() => {
-    const queryParams = new URLSearchParams(location.search);
-    const searchQuery = queryParams.get("search");
+    const fetchData = async () => {
+      try {
+        const response = await axios.get("http://localhost:8000/products/");
+        setAllProducts(response.data.data);
+      } catch (error) {
+        console.error("Error fetching products:", error);
+      }
+    };
 
-    if (searchQuery) {
-      const filtered = products.filter((product) =>
-        product.name.toLowerCase().includes(searchQuery.toLowerCase())
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    const searchQuery =
+      new URLSearchParams(location.search).get("search") || "";
+    let filtered = [...allProducts];
+
+    if (searchQuery.trim() !== "" && filtered.length > 0) {
+      filtered = filtered.filter((product) =>
+        product.title.toLowerCase().includes(searchQuery.toLowerCase())
       );
-      setFilteredProducts(filtered);
-    } else {
-      setFilteredProducts(products);
     }
-  }, [location.search]);
+
+    filtered = filtered.filter((product) => product.available === true);
+
+    setFilteredProducts(filtered);
+  }, [location.search, allProducts]);
 
   return (
     <>
@@ -55,10 +71,10 @@ const Product = () => {
               filteredProduts.map((product) => (
                 <CardProducts key={product.id}>
                   <CardProducts.Header
-                    image={product.image}
-                    alt={product.alt}
+                    image={product.img_url}
+                    alt={product.title}
                   />
-                  <CardProducts.Body name={product.name} />
+                  <CardProducts.Body name={product.title} />
                   <CardProducts.Footer
                     productId={product.id}
                     handleAddToCart={handleAddToCart}
