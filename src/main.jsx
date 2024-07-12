@@ -7,6 +7,10 @@ import Product from "./pages/product.jsx";
 import About from "./pages/about.jsx";
 import Contact from "./pages/contact.jsx";
 import ErrorPage from "./pages/404.jsx";
+import Admin from "./pages/admin/admin.jsx";
+import Dashboard from "./pages/admin/dashboard.jsx";
+import AdminProduct from "./pages/admin/product.jsx";
+import Order from "./pages/admin/order.jsx";
 
 const router = createBrowserRouter([
   {
@@ -25,6 +29,24 @@ const router = createBrowserRouter([
   {
     path: "/contact",
     element: <Contact />,
+  },
+  {
+    path: "/admin",
+    element: <Admin />,
+    children: [
+      {
+        path: "dashboard",
+        element: <Dashboard />,
+      },
+      {
+        path: "product",
+        element: <AdminProduct />,
+      },
+      {
+        path: "order",
+        element: <Order />,
+      },
+    ],
   },
 ]);
 

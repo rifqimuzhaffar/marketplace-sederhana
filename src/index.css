@@ -4,6 +4,7 @@
 
 ::-webkit-scrollbar {
   width: 4px;
+  scrollbar-width: none;
 }
 
 ::-webkit-scrollbar-track {
@@ -17,4 +18,12 @@
 
 ::-webkit-scrollbar-thumb:hover {
   background: #b6895b;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
 }
