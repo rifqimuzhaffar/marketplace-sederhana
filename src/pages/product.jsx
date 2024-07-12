@@ -76,8 +76,9 @@ const Product = () => {
                   />
                   <CardProducts.Body name={product.title} />
                   <CardProducts.Footer
-                    productId={product.id}
+                    productId={product}
                     handleAddToCart={handleAddToCart}
+                    handleUpdateQuantity={handleUpdateQuantity}
                   />
                 </CardProducts>
               ))

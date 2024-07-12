@@ -3,10 +3,13 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { confirmAlert } from "react-confirm-alert";
+import "react-confirm-alert/src/react-confirm-alert.css";
 
 const AdminProduct = () => {
   const [products, setProducts] = useState([]);
   const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [editProductId, setEditProductId] = useState(null);
   const [newProduct, setNewProduct] = useState({
     image: null,
     title: "",
@@ -14,26 +17,27 @@ const AdminProduct = () => {
     description: "",
     display: true,
   });
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const toastId = toast.info("Loading products...", {
-          autoClose: false,
-          position: "top-center",
-          theme: "colored",
-        });
-        const response = await axios.get("http://localhost:8000/products/");
-        setProducts(response.data.data);
-        toast.dismiss(toastId);
-      } catch (error) {
-        console.error("Error fetching products:", error);
-        toast.error("Failed to fetch products");
-      }
-    };
-
     fetchProducts();
   }, []);
+
+  const fetchProducts = async () => {
+    try {
+      const toastId = toast.info("Loading products...", {
+        autoClose: false,
+        position: "top-center",
+        theme: "colored",
+      });
+      const response = await axios.get("http://localhost:8000/products/");
+      setProducts(response.data.data);
+      toast.dismiss(toastId);
+    } catch (error) {
+      console.error("Error fetching products:", error);
+      toast.error("Failed to fetch products");
+    }
+  };
 
   const handleInputChange = (e) => {
     const { name, value, files } = e.target;
@@ -55,6 +59,27 @@ const AdminProduct = () => {
 
   const handleAddProduct = async () => {
     try {
+      setIsLoading(true);
+
+      if (
+        !newProduct.image ||
+        !newProduct.title ||
+        !newProduct.price ||
+        !newProduct.description
+      ) {
+        toast.error("Please fill in all fields");
+        return;
+      }
+
+      if (
+        !["image/jpeg", "image/png", "image/jpg"].includes(
+          newProduct.image.type
+        )
+      ) {
+        toast.error("Only JPG, PNG, JPEG formats are allowed");
+        return;
+      }
+
       const formData = new FormData();
       formData.append("image", newProduct.image);
       formData.append("title", newProduct.title);
@@ -73,11 +98,20 @@ const AdminProduct = () => {
       );
 
       setProducts([...products, response.data.data]);
-      setModalIsOpen(false);
       toast.success("Product added successfully");
+      setModalIsOpen(false);
+      setNewProduct({
+        image: null,
+        title: "",
+        price: "",
+        description: "",
+        display: true,
+      });
     } catch (error) {
       console.error("Error adding product:", error);
       toast.error("Failed to add product");
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -85,8 +119,113 @@ const AdminProduct = () => {
     return available ? "Display" : "No Display";
   };
 
+  const openEditModal = (productId) => {
+    const productToEdit = products.find((product) => product.id === productId);
+    setEditProductId(productId);
+    setNewProduct({
+      image: null,
+      title: productToEdit.title,
+      price: String(productToEdit.price),
+      description: productToEdit.description,
+      display: productToEdit.available,
+    });
+    setModalIsOpen(true);
+  };
+
+  const handleEditProduct = async () => {
+    try {
+      setIsLoading(true);
+
+      if (
+        newProduct.image &&
+        !["image/jpeg", "image/png", "image/jpg"].includes(
+          newProduct.image.type
+        )
+      ) {
+        toast.error("Only JPG, PNG, JPEG formats are allowed");
+        return;
+      }
+
+      const formData = new FormData();
+      formData.append("image", newProduct.image);
+      formData.append("title", newProduct.title);
+      formData.append("price", newProduct.price);
+      formData.append("available", newProduct.display ? "true" : "false");
+      formData.append("description", newProduct.description);
+
+      const response = await axios.patch(
+        `http://localhost:8000/products/${editProductId}`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+
+      const updatedProductIndex = products.findIndex(
+        (product) => product.id === editProductId
+      );
+      const updatedProducts = [...products];
+      updatedProducts[updatedProductIndex] = response.data.data;
+
+      setProducts(updatedProducts);
+      toast.success("Product updated successfully");
+      setModalIsOpen(false);
+      setNewProduct({
+        image: null,
+        title: "",
+        price: "",
+        description: "",
+        display: true,
+      });
+    } catch (error) {
+      console.error("Error updating product:", error);
+      toast.error("Failed to update product");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleDeleteProduct = (productId) => {
+    confirmAlert({
+      title: "Confirm Delete Product",
+      message: "Are you sure you want to delete this product?",
+      buttons: [
+        {
+          label: "Yes",
+          onClick: async () => {
+            try {
+              await axios.delete(`http://localhost:8000/products/${productId}`);
+              const updatedProducts = products.filter(
+                (product) => product.id !== productId
+              );
+              setProducts(updatedProducts);
+              toast.success("Product deleted successfully");
+            } catch (error) {
+              console.error("Error deleting product:", error);
+              toast.error("Failed to delete product");
+            }
+          },
+        },
+        {
+          label: "No",
+          onClick: () => {},
+        },
+      ],
+    });
+  };
+
   const closeModal = () => {
     setModalIsOpen(false);
+    setEditProductId(null);
+    setNewProduct({
+      image: null,
+      title: "",
+      price: "",
+      description: "",
+      display: true,
+    });
   };
 
   return (
@@ -94,7 +233,10 @@ const AdminProduct = () => {
       <ToastContainer />
       <h2 className="text-3xl ml-4 my-2 font-bold">Products Data</h2>
       <button
-        onClick={() => setModalIsOpen(true)}
+        onClick={() => {
+          setModalIsOpen(true);
+          setEditProductId(null);
+        }}
         className="bg-black text-white px-4 py-2 ml-4 mb-2 rounded-md"
       >
         Add Product
@@ -134,8 +276,14 @@ const AdminProduct = () => {
                 </td>
                 <td className="p-2 border">
                   <div className="flex justify-center gap-2 lg:gap-6">
-                    <FaEdit className="text-blue-500 cursor-pointer lg:h-8 w-8" />
-                    <FaTrash className="text-red-500 cursor-pointer lg:h-8 w-8" />
+                    <FaEdit
+                      onClick={() => openEditModal(product.id)}
+                      className="text-blue-500 cursor-pointer lg:h-8 w-8"
+                    />
+                    <FaTrash
+                      onClick={() => handleDeleteProduct(product.id)}
+                      className="text-red-500 cursor-pointer lg:h-8 w-8"
+                    />
                   </div>
                 </td>
               </tr>
@@ -153,8 +301,21 @@ const AdminProduct = () => {
             className="bg-white p-6 rounded-lg shadow-lg max-w-md max-h-[500px] w-full overflow-y-auto no-scrollbar"
             onClick={(e) => e.stopPropagation()}
           >
-            <h2 className="text-xl font-bold mb-2">Add New Product</h2>
+            <h2 className="text-xl font-bold mb-2">
+              {editProductId ? "Edit Product" : "Add New Product"}
+            </h2>
             <form className="space-y-4">
+              {editProductId && (
+                <div>
+                  <label className="block mb-1">Product ID</label>
+                  <input
+                    type="text"
+                    value={editProductId}
+                    readOnly
+                    className="w-full px-3 py-2 border border-black rounded"
+                  />
+                </div>
+              )}
               <div>
                 <label className="block mb-1">Image</label>
                 <input
@@ -193,38 +354,41 @@ const AdminProduct = () => {
                 <label className="block mb-1">Display</label>
                 <select
                   name="display"
-                  value={newProduct.display}
+                  value={newProduct.display ? "true" : "false"}
                   onChange={handleInputChange}
                   className="w-full px-3 py-2 border border-black rounded"
                 >
-                  <option value={true}>Display</option>
-                  <option value={false}>No Display</option>
+                  <option value="true">Yes</option>
+                  <option value="false">No</option>
                 </select>
               </div>
               <div>
                 <label className="block mb-1">Description</label>
                 <textarea
                   name="description"
+                  placeholder="Description"
                   value={newProduct.description}
                   onChange={handleInputChange}
                   className="w-full px-3 py-2 border border-black rounded"
-                  rows="4"
-                ></textarea>
+                />
               </div>
-              <div className="flex justify-end">
+              <div className="flex justify-end gap-4">
                 <button
                   type="button"
-                  onClick={handleAddProduct}
-                  className="bg-black text-white px-4 py-2 rounded-md mr-2"
+                  onClick={closeModal}
+                  className="bg-gray-400 text-white px-4 py-2 rounded-md"
                 >
-                  Add Product
+                  Cancel
                 </button>
                 <button
                   type="button"
-                  onClick={() => setModalIsOpen(false)}
-                  className="bg-red-600 text-white px-4 py-2 rounded-md"
+                  onClick={editProductId ? handleEditProduct : handleAddProduct}
+                  className={`${
+                    editProductId ? "bg-blue-500" : "bg-green-500"
+                  } text-white px-4 py-2 rounded-md`}
+                  disabled={isLoading}
                 >
-                  Cancel
+                  {isLoading ? "Loading..." : editProductId ? "Update" : "Add"}
                 </button>
               </div>
             </form>
