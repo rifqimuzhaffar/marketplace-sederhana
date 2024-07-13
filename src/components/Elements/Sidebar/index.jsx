@@ -8,7 +8,7 @@ let toggleSidebarFn;
 const Sidebar = () => {
   const [showSidebar, setShowSidebar] = useState(false);
   const navigate = useNavigate();
-  const { isAuthenticated, userRole, logout } = useAuth();
+  const { isAuthenticated, logout } = useAuth();
 
   const toggleSidebar = (e) => {
     e.preventDefault();
