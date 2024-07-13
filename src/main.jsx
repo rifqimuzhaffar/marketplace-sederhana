@@ -7,10 +7,16 @@ import Product from "./pages/product.jsx";
 import About from "./pages/about.jsx";
 import Contact from "./pages/contact.jsx";
 import ErrorPage from "./pages/404.jsx";
+<<<<<<< HEAD
 import Admin from "./pages/admin/admin.jsx";
 import Dashboard from "./pages/admin/dashboard.jsx";
 import AdminProduct from "./pages/admin/product.jsx";
 import Order from "./pages/admin/order.jsx";
+=======
+import Login from "./pages/login.jsx";
+import Register from "./pages/register.jsx";
+import { AuthProvider } from "./context/AuthContext.jsx";
+>>>>>>> 9ab2d963291abfb373ddf44822872c07833e152b
 
 const router = createBrowserRouter([
   {
@@ -31,6 +37,7 @@ const router = createBrowserRouter([
     element: <Contact />,
   },
   {
+<<<<<<< HEAD
     path: "/admin",
     element: <Admin />,
     children: [
@@ -47,11 +54,21 @@ const router = createBrowserRouter([
         element: <Order />,
       },
     ],
+=======
+    path: "/login",
+    element: <Login />,
+  },
+  {
+    path: "/register",
+    element: <Register />,
+>>>>>>> 9ab2d963291abfb373ddf44822872c07833e152b
   },
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <AuthProvider>
+      <RouterProvider router={router} />
+    </AuthProvider>
   </React.StrictMode>
 );
