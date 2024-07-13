@@ -23,8 +23,11 @@ const FormLogin = () => {
         email,
         password,
       });
-      const { role } = response.data.data;
+      const { token, role } = response.data.data;
       toast.success("Login successful!");
+
+      localStorage.setItem("token", token);
+
       login(role);
       if (role === "admin") {
         navigate("/admin");

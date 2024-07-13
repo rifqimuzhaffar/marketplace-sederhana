@@ -9,6 +9,10 @@ import Contact from "./pages/contact.jsx";
 import ErrorPage from "./pages/404.jsx";
 import Login from "./pages/login.jsx";
 import Register from "./pages/register.jsx";
+import Admin from "./pages/admin/admin.jsx";
+import Dashboard from "./pages/admin/dashboard.jsx";
+import AdminProduct from "./pages/admin/product.jsx";
+import Order from "./pages/admin/order.jsx";
 import { AuthProvider } from "./context/AuthContext.jsx";
 
 const router = createBrowserRouter([
@@ -36,6 +40,24 @@ const router = createBrowserRouter([
   {
     path: "/register",
     element: <Register />,
+  },
+  {
+    path: "/admin",
+    element: <Admin />,
+    children: [
+      {
+        path: "dashboard",
+        element: <Dashboard />,
+      },
+      {
+        path: "product",
+        element: <AdminProduct />,
+      },
+      {
+        path: "order",
+        element: <Order />,
+      },
+    ],
   },
 ]);
 
