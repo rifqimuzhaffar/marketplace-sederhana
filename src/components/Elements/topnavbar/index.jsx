@@ -1,9 +1,16 @@
 import { useState } from "react";
-import { FiSearch, FiMenu, FiShoppingCart } from "react-icons/fi";
+import {
+  FiSearch,
+  FiMenu,
+  FiShoppingCart,
+  FiUser,
+  FiLogOut,
+} from "react-icons/fi";
 import { Link } from "react-router-dom";
 import { Sidebar, toggleSidebarFn } from "../Sidebar";
 import { ShoppingCart, toggleShoppingCartFn } from "../ShoppingCart";
 import { Search, toggleSearchFn } from "../Search";
+import { useAuth } from "../../../context/AuthContext";
 
 const MenuLinks = [
   { id: 1, name: "Home", path: "/" },
@@ -27,6 +34,7 @@ export const navItems = MenuLinks.map((data) => (
 const TopNavbar = ({ cart, handleUpdateQuantity, handleRemoveItem }) => {
   const [checkedOut, setCheckedOut] = useState(false);
   const [purchaseHistory, setPurchaseHistory] = useState([]);
+  const { isAuthenticated, logout } = useAuth();
 
   const handleMenuClickSidebar = (e) => {
     e.preventDefault();
@@ -97,11 +105,28 @@ const TopNavbar = ({ cart, handleUpdateQuantity, handleRemoveItem }) => {
           className="relative text-white hover:text-primary transition-colors duration-300"
           onClick={handleMenuClickShoppingCart}
         >
-          <span className="absolute w-3 h-3 rounded-full bg-red-500 top-4 left-4 text-[8px] text-center md:w-5 md:h-5 md:text-[12px]">
+          <span className="absolute w-3 h-3 rounded-full bg-red-500 top-4 left-4 text-[8px] text-center md:w-4 md:h-4 md:text-[10px]">
             {cart && cart.length}
           </span>
           <FiShoppingCart className="h-6 w-6" />
         </a>
+
+        {isAuthenticated ? (
+          <Link
+            onClick={logout}
+            to="/login"
+            className="hidden lg:flex text-white hover:text-primary transition-colors duration-300"
+          >
+            <FiLogOut className="h-6 w-6" />
+          </Link>
+        ) : (
+          <Link
+            to="/login"
+            className="hidden lg:flex text-white hover:text-primary transition-colors duration-300"
+          >
+            <FiUser className="h-6 w-6" />
+          </Link>
+        )}
 
         <a
           href="#"
