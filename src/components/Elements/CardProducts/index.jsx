@@ -1,5 +1,4 @@
 import { FiShoppingCart } from "react-icons/fi";
-import products from "../../../data/dataProducts";
 import AOS from "aos";
 import "aos/dist/aos.css";
 
@@ -29,7 +28,7 @@ const Body = (props) => {
 };
 
 const Footer = ({ productId, handleAddToCart, handleUpdateQuantity }) => {
-  const item = products.find((product) => product.id === productId);
+  const item = productId;
 
   const handleClick = () => {
     if (item) {
@@ -42,17 +41,18 @@ const Footer = ({ productId, handleAddToCart, handleUpdateQuantity }) => {
 
   return (
     <div className="flex justify-between items-center">
-      {item && (
-        <>
-          <p>IDR {item.price.toLocaleString("id-ID")}</p>
-          <button
-            onClick={handleClick}
-            className="border p-2 rounded-full bg-black hover:bg-white"
-          >
-            <FiShoppingCart className="h-5 w-5 text-primary" />
-          </button>
-        </>
-      )}
+      {item &&
+        item.price !== undefined && ( // Pastikan `item` dan `item.price` tidak undefined
+          <>
+            <p>IDR {item.price.toLocaleString("id-ID")}</p>
+            <button
+              onClick={handleClick}
+              className="border p-2 rounded-full bg-black hover:bg-white"
+            >
+              <FiShoppingCart className="h-5 w-5 text-primary" />
+            </button>
+          </>
+        )}
     </div>
   );
 };
