@@ -6,7 +6,7 @@ import {
   FiUser,
   FiLogOut,
 } from "react-icons/fi";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Sidebar, toggleSidebarFn } from "../Sidebar";
 import { ShoppingCart, toggleShoppingCartFn } from "../ShoppingCart";
 import { Search, toggleSearchFn } from "../Search";
@@ -35,6 +35,9 @@ const TopNavbar = ({ cart, handleUpdateQuantity, handleRemoveItem }) => {
   const [checkedOut, setCheckedOut] = useState(false);
   const [purchaseHistory, setPurchaseHistory] = useState([]);
   const { isAuthenticated, logout } = useAuth();
+  const navigate = useNavigate();
+
+  const totalQuantity = cart.reduce((total, item) => total + item.quantity, 0);
 
   const handleMenuClickSidebar = (e) => {
     e.preventDefault();
@@ -78,9 +81,14 @@ const TopNavbar = ({ cart, handleUpdateQuantity, handleRemoveItem }) => {
   const calculateTotalPrice = () => {
     let total = 0;
     cart.forEach((item) => {
-      total += item.price * item.quantity;
+      total += item.product.price * item.quantity;
     });
     return total;
+  };
+
+  const handleLogout = () => {
+    logout();
+    navigate("/login");
   };
 
   return (
@@ -106,14 +114,14 @@ const TopNavbar = ({ cart, handleUpdateQuantity, handleRemoveItem }) => {
           onClick={handleMenuClickShoppingCart}
         >
           <span className="absolute w-3 h-3 rounded-full bg-red-500 top-4 left-4 text-[8px] text-center md:w-4 md:h-4 md:text-[10px]">
-            {cart && cart.length}
+            {totalQuantity}
           </span>
           <FiShoppingCart className="h-6 w-6" />
         </a>
 
         {isAuthenticated ? (
           <Link
-            onClick={logout}
+            onClick={handleLogout}
             to="/login"
             className="hidden lg:flex text-white hover:text-primary transition-colors duration-300"
           >
@@ -146,7 +154,6 @@ const TopNavbar = ({ cart, handleUpdateQuantity, handleRemoveItem }) => {
         handleCheckout={handleCheckout}
         handleBackToCart={handleBackToCart}
         checkedOut={checkedOut}
-        purchaseHistory={purchaseHistory}
       />
     </nav>
   );

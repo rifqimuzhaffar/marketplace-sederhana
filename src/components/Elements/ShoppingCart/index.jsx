@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { FiArrowLeft, FiTrash2 } from "react-icons/fi";
+import axios from "axios";
 
 let toggleShoppingCartFn;
 
@@ -11,15 +12,75 @@ const ShoppingCart = ({
   handleCheckout,
   handleBackToCart,
   checkedOut,
-  purchaseHistory,
+  setCheckedOut,
+  setCart,
 }) => {
   const [showShoppingCart, setShowShoppingCart] = useState(false);
+  const [selectedTable, setSelectedTable] = useState("");
 
   const toggleShoppingCart = (e) => {
     e.preventDefault();
     setShowShoppingCart((prevState) => !prevState);
   };
   toggleShoppingCartFn = toggleShoppingCart;
+
+  const handleChangeTable = (e) => {
+    setSelectedTable(e.target.value);
+  };
+
+  const handleCheckoutClick = async () => {
+    const userId = localStorage.getItem("userId");
+
+    if (!userId) {
+      console.error("User ID not found in local storage");
+      return;
+    }
+
+    const checkoutData = {
+      userId: parseInt(userId),
+      tableNumber: selectedTable,
+      cart: cart.map((item) => ({
+        product: {
+          id: item.product.id,
+          price: item.product.price,
+          title: item.product.title,
+        },
+        quantity: item.quantity,
+      })),
+    };
+
+    try {
+      const response = await axios.post(
+        "http://localhost:8000/purchases/",
+        checkoutData,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+      console.log("Checkout successful:", response.data);
+      setCart([]);
+      setCheckedOut(true);
+    } catch (error) {
+      const errorMessage =
+        error.response?.data || "An error occurred during checkout.";
+      console.error("Error during checkout:", errorMessage);
+    }
+  };
+
+  const fetchPurchaseHistory = async (userId) => {
+    try {
+      const response = await axios.get("http://localhost:8000/purchases/", {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+      setPurchases(response.data.data);
+    } catch (error) {
+      console.error("Kesalahan saat mengambil riwayat pembelian:", error);
+    }
+  };
 
   return (
     <>
@@ -38,38 +99,6 @@ const ShoppingCart = ({
                 Purchase History
               </h1>
             </div>
-            <ul className="divide-y divide-black">
-              {purchaseHistory.map((purchase, index) => (
-                <li key={index} className="px-4">
-                  <div>
-                    <p className="text-lg">{purchase.time}</p>
-                    {purchase.product && (
-                      <div className="flex justify-between items-center">
-                        <p>
-                          {purchase.product.name} x {purchase.product.quantity}
-                        </p>
-                        <p>
-                          IDR{" "}
-                          {(
-                            purchase.product.price * purchase.product.quantity
-                          ).toLocaleString("id-ID")}
-                        </p>
-                      </div>
-                    )}
-                  </div>
-                </li>
-              ))}
-            </ul>
-            <p className="text-xl mt-4">
-              Total Pembelian: IDR{" "}
-              {purchaseHistory
-                .reduce((total, purchase) => {
-                  return (
-                    total + purchase.product.price * purchase.product.quantity
-                  );
-                }, 0)
-                .toLocaleString("id-ID")}
-            </p>
           </div>
         ) : (
           <div>
@@ -90,8 +119,8 @@ const ShoppingCart = ({
                 <tbody>
                   {cart.map((item) => (
                     <tr key={item.id}>
-                      <td>{item.name}</td>
-                      <td>{item.price.toLocaleString("id-ID")}</td>
+                      <td>{item.product.title}</td>
+                      <td>{item.product.price.toLocaleString("id-ID")}</td>
                       <td className="text-center">
                         <div className="flex items-center justify-center">
                           <button
@@ -114,7 +143,7 @@ const ShoppingCart = ({
                           </button>
                         </div>
                       </td>
-                      <td>{item.price * item.quantity}</td>
+                      <td>{item.product.price * item.quantity}</td>
                       <td>
                         <button
                           onClick={() => handleRemoveItem(item.id)}
@@ -143,10 +172,27 @@ const ShoppingCart = ({
               </div>
             )}
             {cart && cart.length > 0 && (
-              <div className="text-right mt-4 pr-4">
+              <div className="flex items-center justify-between p-2">
+                <div className="">
+                  <label htmlFor="tableNumber" className="">
+                    Table:
+                  </label>
+                  <select
+                    id="tableNumber"
+                    className="px-3 py-1 border border-gray-300 rounded"
+                    onChange={handleChangeTable}
+                  >
+                    <option value="">Select Table</option>
+                    {[...Array(10)].map((_, index) => (
+                      <option key={index + 1} value={index + 1}>
+                        Table {index + 1}
+                      </option>
+                    ))}
+                  </select>
+                </div>
                 <button
-                  onClick={handleCheckout}
-                  className="bg-primary text-white px-4 py-2 rounded-md hover:bg-white hover:text-primary border border-primary transition-colors duration-300"
+                  onClick={handleCheckoutClick}
+                  className="bg-primary text-white px-4 py-1 rounded-md hover:bg-white hover:text-primary border border-primary transition-colors duration-300"
                 >
                   Checkout
                 </button>

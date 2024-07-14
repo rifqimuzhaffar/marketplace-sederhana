@@ -23,19 +23,18 @@ const FormLogin = () => {
         email,
         password,
       });
-      const { token, role } = response.data.data;
+      const { token, role, userId } = response.data.data;
       toast.success("Login successful!");
 
       localStorage.setItem("token", token);
+      localStorage.setItem("userId", userId);
 
-      login(role);
+      login(role, userId);
       if (role === "admin") {
         navigate("/admin");
       } else {
         navigate("/product");
       }
-
-      console.log(response.data);
     } catch (error) {
       console.error("Error logging in:", error.response.data);
       toast.error("Failed to login. Please check your credentials.");

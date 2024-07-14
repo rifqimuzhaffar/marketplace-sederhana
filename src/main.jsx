@@ -14,6 +14,8 @@ import Dashboard from "./pages/admin/dashboard.jsx";
 import AdminProduct from "./pages/admin/product.jsx";
 import Order from "./pages/admin/order.jsx";
 import { AuthProvider } from "./context/AuthContext.jsx";
+import PrivateRoute from "./routes/PrivateRoute/index.jsx";
+import PublicRoute from "./routes/PublicRoute/index.jsx";
 
 const router = createBrowserRouter([
   {
@@ -35,15 +37,27 @@ const router = createBrowserRouter([
   },
   {
     path: "/login",
-    element: <Login />,
+    element: (
+      <PublicRoute>
+        <Login />
+      </PublicRoute>
+    ),
   },
   {
     path: "/register",
-    element: <Register />,
+    element: (
+      <PublicRoute>
+        <Register />
+      </PublicRoute>
+    ),
   },
   {
     path: "/admin",
-    element: <Admin />,
+    element: (
+      <PrivateRoute roles={["admin"]}>
+        <Admin />
+      </PrivateRoute>
+    ),
     children: [
       {
         path: "dashboard",

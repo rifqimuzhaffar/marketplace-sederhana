@@ -1,47 +1,115 @@
 import { useState, useEffect } from "react";
+import { useAuth } from "../context/AuthContext";
+import axios from "axios";
+import { toast } from "react-toastify";
 
 const useCart = () => {
-  const [cart, setCart] = useState(() => {
-    const storedCart = localStorage.getItem("cart");
-    return storedCart ? JSON.parse(storedCart) : [];
-  });
-
+  const { userId } = useAuth();
+  const [cart, setCart] = useState([]);
   const [addedMessage, setAddedMessage] = useState("");
 
   useEffect(() => {
-    localStorage.setItem("cart", JSON.stringify(cart));
-  }, [cart]);
+    const fetchCart = async () => {
+      if (userId) {
+        try {
+          const response = await axios.get(
+            `http://localhost:8000/carts/${userId}`,
+            {
+              headers: {
+                Authorization: `Bearer ${localStorage.getItem("token")}`,
+              },
+            }
+          );
+          setCart(response.data || []);
+        } catch (error) {
+          console.error("Error fetching cart:", error);
+        }
+      }
+    };
 
-  const handleAddToCart = (item) => {
-    const existingItem = cart.find((cartItem) => cartItem.id === item.id);
+    fetchCart();
+  }, [userId]);
 
-    if (existingItem) {
-      const updatedCart = cart.map((cartItem) =>
-        cartItem.id === item.id
-          ? { ...cartItem, quantity: cartItem.quantity + 1 }
-          : cartItem
-      );
-      setCart(updatedCart);
-      setAddedMessage(`${item.name} Already at cart`);
-    } else {
-      setCart([...cart, { ...item, quantity: 1 }]);
-      setAddedMessage(`${item.name} Add to cart`);
+  const handleAddToCart = async (item) => {
+    if (!userId) {
+      console.error("User ID is undefined");
+      return;
     }
+
+    try {
+      await axios.post(
+        `http://localhost:8000/carts`,
+        {
+          userId,
+          productId: item.id,
+          quantity: 1,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+
+      const response = await axios.get(
+        `http://localhost:8000/carts/${userId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+
+      setCart(response.data || []);
+      setAddedMessage(`${item.title} added to cart`);
+    } catch (error) {
+      console.error("Error adding item to cart:", error);
+    }
+
     setTimeout(() => {
       setAddedMessage("");
     }, 2000);
   };
 
-  const handleUpdateQuantity = (productId, newQuantity) => {
-    const updatedCart = cart.map((item) =>
-      item.id === productId ? { ...item, quantity: newQuantity } : item
-    );
-    setCart(updatedCart);
+  const handleUpdateQuantity = async (itemId, quantity) => {
+    try {
+      const response = await axios.patch(
+        `http://localhost:8000/carts/${itemId}`,
+        {
+          quantity: quantity,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+
+      const updatedCartItem = response.data;
+      setCart((prevCart) =>
+        prevCart.map((cartItem) =>
+          cartItem.id === itemId ? updatedCartItem : cartItem
+        )
+      );
+    } catch (error) {
+      console.error("Error updating item quantity:", error);
+    }
   };
 
-  const handleRemoveItem = (productId) => {
-    const updatedCart = cart.filter((item) => item.id !== productId);
-    setCart(updatedCart);
+  const handleRemoveItem = async (itemId) => {
+    try {
+      await axios.delete(`http://localhost:8000/carts/${itemId}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+
+      setCart((prevCart) =>
+        prevCart.filter((cartItem) => cartItem.id !== itemId)
+      );
+    } catch (error) {
+      console.error("Error removing item from cart:", error);
+    }
   };
 
   return {

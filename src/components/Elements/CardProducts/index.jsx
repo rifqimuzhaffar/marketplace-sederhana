@@ -1,6 +1,8 @@
 import { FiShoppingCart } from "react-icons/fi";
 import AOS from "aos";
 import "aos/dist/aos.css";
+import { useAuth } from "../../../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 AOS.init();
 const CardProducts = (props) => {
@@ -29,30 +31,30 @@ const Body = (props) => {
 
 const Footer = ({ productId, handleAddToCart, handleUpdateQuantity }) => {
   const item = productId;
+  const { isAuthenticated } = useAuth();
+  const navigate = useNavigate();
 
   const handleClick = () => {
-    if (item) {
+    if (!isAuthenticated) {
+      navigate("/login");
+    } else if (item) {
       handleAddToCart(item);
-      if (typeof handleUpdateQuantity === "function") {
-        handleUpdateQuantity(item.id, item.quantity + 1);
-      }
     }
   };
 
   return (
     <div className="flex justify-between items-center">
-      {item &&
-        item.price !== undefined && ( // Pastikan `item` dan `item.price` tidak undefined
-          <>
-            <p>IDR {item.price.toLocaleString("id-ID")}</p>
-            <button
-              onClick={handleClick}
-              className="border p-2 rounded-full bg-black hover:bg-white"
-            >
-              <FiShoppingCart className="h-5 w-5 text-primary" />
-            </button>
-          </>
-        )}
+      {item && item.price !== undefined && (
+        <>
+          <p>IDR {item.price.toLocaleString("id-ID")}</p>
+          <button
+            onClick={handleClick}
+            className="border p-2 rounded-full bg-black hover:bg-white"
+          >
+            <FiShoppingCart className="h-5 w-5 text-primary" />
+          </button>
+        </>
+      )}
     </div>
   );
 };

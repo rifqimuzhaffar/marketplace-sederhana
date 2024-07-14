@@ -21,6 +21,11 @@ const Sidebar = () => {
     navigate("/login");
   };
 
+  const handleLogout = () => {
+    logout();
+    navigate("/login");
+  };
+
   return (
     <div
       className={`absolute top-full w-[15rem] h-screen bg-black/80 text-white z-20 ${
@@ -32,7 +37,7 @@ const Sidebar = () => {
         <div className="mb-[4.5rem]">
           {isAuthenticated ? (
             <button
-              onClick={logout}
+              onClick={handleLogout}
               className="px-4 font-semibold text-white hover:text-primary relative group w-full border border-white p-2"
             >
               Logout
